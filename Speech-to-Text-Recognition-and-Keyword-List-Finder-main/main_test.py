@@ -1,10 +1,18 @@
+import os
+
 import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 from pydub import AudioSegment as am
 
+keywordList = ["this", "that", "Hi"]
+
 
 def silence_based_conversion(path):
+    with open("api-key.json") as f:
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'api-key.json'
+        GOOGLE_CLOUD_SPEECH_CREDENTIALS = f.read()
+
     myaudio = AudioSegment.from_file(path, "wav")
     chunk_length_ms = 4000  # pydub calculates in millisec
     chunks = make_chunks(myaudio, chunk_length_ms)  # Make chunks of one sec
@@ -34,9 +42,20 @@ def silence_based_conversion(path):
             # r.adjust_for_ambient_noise(source)
             audio_listened = r.listen(source)
         try:
-            rec = r.recognize_google_cloud(audio_listened)
-            # print(rec)
+            rec = r.recognize_google_cloud(audio_listened, credentials_json=GOOGLE_CLOUD_SPEECH_CREDENTIALS)
+            print(type(rec))
+            # if rec:
+            #     if rec.__contains__(keywordList):
+            #         rec = rec + "=> chunk file name : " + str(chunk)
             fh.write(rec + ". ")
+            # need to include the chunk info, matched keywords if
+            # found the string is not empty and contains at least a single keyword
+            # should only write info to the file only if a keyword exists
+            # then read the final file and capture the related keyword and chunk
+            # and then include the chunk info to the database
+            # To the report include chunk info, and upload the chunks to the
+            # drive
+
         except:
             rec = r.recognize_google_cloud(audio_listened, show_all=True)
             print(rec, type(rec))
@@ -48,10 +67,9 @@ if __name__ == '__main__':
     print('Starting speech recognition process')
 
     # path = input()
-    path = 'test.wav'  ## need a .wav file with 16kHz sample rate
+    path = 'output.wav'  ## need a .wav file with 16kHz sample rate
 
     silence_based_conversion(path)
-
 
 # sound = am.from_file(filepath, format='wav', frame_rate=22050)
 # sound = sound.set_frame_rate(16000)
