@@ -5,7 +5,11 @@ from pydub import AudioSegment
 from pydub.utils import make_chunks
 from pydub import AudioSegment as am
 
-keywordList = ["this", "that", "Hi"]
+#### Need to retrieve info through Flask API
+def getSessionInfo():
+    candidateID = 'IT17019750'
+    examID = 'IT4150'
+    return candidateID, examID
 
 
 def silence_based_conversion(path):
@@ -19,7 +23,20 @@ def silence_based_conversion(path):
 
     # open a file where we will concatenate
     # and store the recognized text
+
+    candidateID, examID = getSessionInfo()
+
     fh = open("recognized.txt", "w+")
+
+    # create a directory to store the audio chunks.
+    try:
+        os.mkdir('audio_chunks')
+    except(FileExistsError):
+        pass
+
+    # move into the directory to
+    # store the audio files.
+    os.chdir('audio_chunks')
 
     # Export all of the individual chunks as wav files
 
@@ -43,6 +60,7 @@ def silence_based_conversion(path):
             audio_listened = r.listen(source)
         try:
             rec = r.recognize_google_cloud(audio_listened, credentials_json=GOOGLE_CLOUD_SPEECH_CREDENTIALS)
+            # rec = r.recognize_google(audio_listened)
             print(type(rec))
             # if rec:
             #     if rec.__contains__(keywordList):
@@ -61,6 +79,10 @@ def silence_based_conversion(path):
             print(rec, type(rec))
 
         i += 1
+
+
+def getAttemptInfo():
+    return 0
 
 
 if __name__ == '__main__':
