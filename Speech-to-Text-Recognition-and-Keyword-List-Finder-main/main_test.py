@@ -4,39 +4,36 @@ import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 from pydub import AudioSegment as am
+import directoryManager
+
 
 #### Need to retrieve info through Flask API
 def getSessionInfo():
     candidateID = 'IT17019750'
-    examID = 'IT4150'
+    examID = 'IT4140'
     return candidateID, examID
 
 
 def silence_based_conversion(path):
+    # calling the getSessionInfo function
+    candidateID, examID = getSessionInfo()
+    ## Importing the directory manager
+    dir = directoryManager.createDirectories(candidateID, examID)
+    print(dir)
     with open("api-key.json") as f:
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'api-key.json'
         GOOGLE_CLOUD_SPEECH_CREDENTIALS = f.read()
 
     myaudio = AudioSegment.from_file(path, "wav")
-    chunk_length_ms = 4000  # pydub calculates in millisec
-    chunks = make_chunks(myaudio, chunk_length_ms)  # Make chunks of one sec
+    chunk_length_ms = 14000  # pydub calculates in millisec
+    chunks = make_chunks(myaudio, chunk_length_ms)
 
-    # open a file where we will concatenate
-    # and store the recognized text
-
-    candidateID, examID = getSessionInfo()
+    # open a file where we will concatenate and store the recognized text
 
     fh = open("recognized.txt", "w+")
 
-    # create a directory to store the audio chunks.
-    try:
-        os.mkdir('audio_chunks')
-    except(FileExistsError):
-        pass
-
-    # move into the directory to
-    # store the audio files.
-    os.chdir('audio_chunks')
+    # move into the directory to store the audio files.
+    os.chdir('data/' + candidateID + '/' + examID + '/' + 'audio_chunks')
 
     # Export all of the individual chunks as wav files
 
@@ -79,10 +76,6 @@ def silence_based_conversion(path):
             print(rec, type(rec))
 
         i += 1
-
-
-def getAttemptInfo():
-    return 0
 
 
 if __name__ == '__main__':

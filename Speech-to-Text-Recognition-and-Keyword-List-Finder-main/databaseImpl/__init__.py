@@ -8,7 +8,7 @@ def connectdb():
     return conn
 
 
-#################################### For Audio Classification Part ###################################################
+#################################### For audioClassification Part ###################################################
 
 def createAudioRecords():
     cursor = connectdb().cursor()
