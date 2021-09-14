@@ -1,10 +1,10 @@
 import os
 
 
-def createDirectories(candidateID, examID):
+def createDirectories(candidateID, examID, cwd):
     candidateID = candidateID
     examID = examID
-    data = 'data'
+    data = cwd + '/' + 'data'
 
     try:
         os.mkdir(data)
@@ -16,14 +16,14 @@ def createDirectories(candidateID, examID):
         os.mkdir(candidateID)
     except(FileExistsError):
         pass
-    os.chdir('..')
+    os.chdir('../audioClassification')
     try:
         os.chdir(data + '/' + candidateID + '/')
         os.mkdir(examID)
     except(FileExistsError):
         pass
 
-    os.chdir('../..')
+    os.chdir('..')
     print(os.getcwd())
     try:
         os.chdir(data + '/' + candidateID + '/' + examID + '/')
@@ -31,5 +31,5 @@ def createDirectories(candidateID, examID):
 
     except(FileExistsError):
         pass
-    os.chdir('../../..')
+    os.chdir('../../../audioClassification')
     print(os.getcwd())

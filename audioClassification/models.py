@@ -3,7 +3,6 @@ from audioClassification import db
 from audioClassification import ma
 
 
-
 #################### DB models ######################################################################
 
 class Articles(db.Model):
@@ -15,6 +14,7 @@ class Articles(db.Model):
     def __init__(self, title, body):
         self.title = title
         self.body = body
+
 
 ### Class User
 
@@ -28,6 +28,7 @@ class User(db.Model):
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+
 
 class ArticleSchema(ma.Schema):
     class Meta:

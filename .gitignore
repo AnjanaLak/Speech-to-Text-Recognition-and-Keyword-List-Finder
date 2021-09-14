@@ -1,9 +1,9 @@
-Speech-to-Text-Recognition-and-Keyword-List-Finder-main/api-key.json
+audioClassification/api-key.json
 /Speech-to-Text-Recognition-and-Keyword-List-Finder-main/chunk0.wav
 /Speech-to-Text-Recognition-and-Keyword-List-Finder-main/chunk1.wav
 /Speech-to-Text-Recognition-and-Keyword-List-Finder-main/chunk2.wav
-/Speech-to-Text-Recognition-and-Keyword-List-Finder-main/output.wav
-/Speech-to-Text-Recognition-and-Keyword-List-Finder-main/recognized.txt
-/Speech-to-Text-Recognition-and-Keyword-List-Finder-main/data/
-/Speech-to-Text-Recognition-and-Keyword-List-Finder-main/test.py
+/audioClassification/output.wav
+/audioClassification/recognized.txt
+/data/
+/audioClassification/test.py
 /.idea/

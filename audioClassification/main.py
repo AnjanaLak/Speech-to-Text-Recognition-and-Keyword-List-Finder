@@ -9,17 +9,19 @@ import directoryManager
 
 #### Need to retrieve info through Flask API
 def getSessionInfo():
-    candidateID = 'IT17019750'
+    candidateID = 'IT17019740'
     examID = 'IT4140'
     return candidateID, examID
 
 
 def silence_based_conversion(path):
+    ## to get the current working directory
+    cwd = os.getcwd()
     # calling the getSessionInfo function
     candidateID, examID = getSessionInfo()
     ## Importing the directory manager
-    dir = directoryManager.createDirectories(candidateID, examID)
-    print(dir)
+    dir = directoryManager.createDirectories(candidateID, examID, cwd)
+    print(os. getcwd() + " ==> is my current working directory")
     with open("api-key.json") as f:
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'api-key.json'
         GOOGLE_CLOUD_SPEECH_CREDENTIALS = f.read()
@@ -33,7 +35,7 @@ def silence_based_conversion(path):
     fh = open("recognized.txt", "w+")
 
     # move into the directory to store the audio files.
-    os.chdir('data/' + candidateID + '/' + examID + '/' + 'audio_chunks')
+    os.chdir('../data/' + candidateID + '/' + examID + '/' + 'audio_chunks')
 
     # Export all of the individual chunks as wav files
 
@@ -76,16 +78,12 @@ def silence_based_conversion(path):
             print(rec, type(rec))
 
         i += 1
+    return 2
 
 
-if __name__ == '__main__':
-    print('Starting speech recognition process')
-
-    # path = input()
-    path = 'output.wav'  ## need a .wav file with 16kHz sample rate
-
-    silence_based_conversion(path)
-
-# sound = am.from_file(filepath, format='wav', frame_rate=22050)
-# sound = sound.set_frame_rate(16000)
-# sound.export(filepath, format='wav')
+def start():
+    path = "output.wav"
+    if silence_based_conversion(path) == 2:
+        return "Completed"
+    else:
+        return "Not completed"
