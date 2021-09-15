@@ -7,9 +7,10 @@ from flask import Flask, request
 
 @app.route('/startAudioProcess', methods=['POST'])
 def process_audio():
-    path = "output.wav"
-    value = request.json['value']
-    x = main.start()
+    audio_path = request.json['path']
+    candidateID = request.json['studentID']
+    examinationID = request.json['examID']
+    x = main.start(audio_path, candidateID, examinationID)
     if x == "Completed":
         return jsonify({"Status": "Completed"})
     else:
